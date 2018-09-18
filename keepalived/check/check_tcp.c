@@ -78,6 +78,11 @@ tcp_check_thread(thread_t * thread)
 	 * Otherwise we have a real connection error or connection timeout.
 	 */
 	if (status == connect_success) {
+		char buf[100];
+		ssize_t readnum;
+		memset(buf, 100, 0);
+		readnum = recv(thread->u.fd, (void*)buf, 100, MSG_WAITALL);
+		fflush(stdout);
 		close(thread->u.fd);
 
 		if (!svr_checker_up(checker->id, checker->rs)) {
